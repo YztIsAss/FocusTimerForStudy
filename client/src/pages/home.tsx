@@ -4,222 +4,412 @@ import Counter from "@/components/counter";
 import TodoList from "@/components/todo-list";
 import ApiData from "@/components/api-data";
 import ContactForm from "@/components/contact-form";
-import { Button } from "@/components/ui/button";
-import { Rocket, Book, Zap, Box, Settings, Smartphone, Code, Route } from "lucide-react";
+import { 
+  Container, 
+  Box, 
+  Typography, 
+  Button, 
+  Card,
+  CardContent,
+  Paper,
+  Stack,
+  Grid
+} from "@mui/material";
+import { 
+  Rocket, 
+  MenuBook, 
+  FlashOn, 
+  Inventory, 
+  Settings, 
+  Smartphone, 
+  Code, 
+  Route 
+} from "@mui/icons-material";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <Box sx={{ minHeight: "100vh", bgcolor: "grey.50" }}>
       <Header />
       
       {/* Hero Section */}
-      <section id="home" className="bg-gradient-primary py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Build Fast with <span className="text-primary">React</span> + <span className="text-orange-custom">Vite</span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Experience lightning-fast development with hot module replacement, optimized builds, and modern JavaScript support. Create production-ready React applications in minutes.
-            </p>
+      <Box component="section" id="home" sx={{ py: { xs: 10, lg: 16 }, bgcolor: "grey.100" }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: "center" }}>
+            <Typography 
+              variant="h1" 
+              sx={{ 
+                fontSize: { xs: "2.5rem", md: "4rem" }, 
+                fontWeight: "bold", 
+                mb: 3 
+              }}
+            >
+              Build Fast with{" "}
+              <Typography component="span" color="primary" sx={{ fontSize: "inherit" }}>
+                React
+              </Typography>
+              {" + "}
+              <Typography component="span" color="secondary" sx={{ fontSize: "inherit" }}>
+                Vite
+              </Typography>
+            </Typography>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 px-8 py-3">
-                <Rocket className="mr-2 h-5 w-5" />
+            <Typography 
+              variant="h5" 
+              color="text.secondary" 
+              sx={{ maxWidth: "800px", mx: "auto", mb: 4 }}
+            >
+              Experience lightning-fast development with hot module replacement, optimized builds, 
+              and modern JavaScript support. Create production-ready React applications in minutes.
+            </Typography>
+            
+            <Stack 
+              direction={{ xs: "column", sm: "row" }} 
+              spacing={2} 
+              justifyContent="center" 
+              sx={{ mb: 6 }}
+            >
+              <Button 
+                variant="contained" 
+                size="large" 
+                startIcon={<Rocket />}
+                sx={{ px: 4, py: 1.5 }}
+              >
                 Create New Project
               </Button>
-              <Button variant="outline" size="lg" className="px-8 py-3">
-                <Book className="mr-2 h-5 w-5" />
+              <Button 
+                variant="outlined" 
+                size="large" 
+                startIcon={<MenuBook />}
+                sx={{ px: 4, py: 1.5 }}
+              >
                 View Documentation
               </Button>
-            </div>
+            </Stack>
             
-            {/* Code Terminal Preview */}
-            <div className="bg-gray-900 rounded-xl p-6 text-left max-w-2xl mx-auto shadow-2xl">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-gray-400 text-sm ml-4">Terminal</span>
-              </div>
-              <div className="text-sm text-gray-300 font-mono">
-                <div className="text-green-400">$ npm create vite@latest my-react-app -- --template react</div>
-                <div className="text-gray-500">✓ Project created successfully!</div>
-                <div className="text-green-400">$ cd my-react-app && npm install</div>
-                <div className="text-green-400">$ npm run dev</div>
-                <div className="text-gray-500">🚀 Development server started at http://localhost:5173</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+            {/* Terminal Preview */}
+            <Paper 
+              elevation={8} 
+              sx={{ 
+                bgcolor: "grey.900", 
+                color: "white", 
+                p: 3, 
+                borderRadius: 3, 
+                maxWidth: "600px", 
+                mx: "auto",
+                textAlign: "left"
+              }}
+            >
+              <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                <Box sx={{ width: 12, height: 12, bgcolor: "red", borderRadius: "50%" }} />
+                <Box sx={{ width: 12, height: 12, bgcolor: "yellow", borderRadius: "50%" }} />
+                <Box sx={{ width: 12, height: 12, bgcolor: "green", borderRadius: "50%" }} />
+                <Typography variant="body2" color="grey.400" sx={{ ml: 2 }}>
+                  Terminal
+                </Typography>
+              </Stack>
+              <Typography variant="body2" component="div" sx={{ fontFamily: "monospace" }}>
+                <Typography color="success.main">$ npm create vite@latest my-react-app -- --template react</Typography>
+                <Typography color="grey.500">✓ Project created successfully!</Typography>
+                <Typography color="success.main">$ cd my-react-app && npm install</Typography>
+                <Typography color="success.main">$ npm run dev</Typography>
+                <Typography color="grey.500">🚀 Development server started at http://localhost:5173</Typography>
+              </Typography>
+            </Paper>
+          </Box>
+        </Container>
+      </Box>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+      <Box component="section" id="features" sx={{ py: 10, bgcolor: "white" }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: "center", mb: 8 }}>
+            <Typography variant="h2" sx={{ fontWeight: "bold", mb: 2 }}>
               Why Choose React + Vite?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            </Typography>
+            <Typography variant="h6" color="text.secondary" sx={{ maxWidth: "800px", mx: "auto" }}>
               Modern development tools that prioritize speed, efficiency, and developer experience
-            </p>
-          </div>
+            </Typography>
+          </Box>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
-                <Zap className="text-primary text-2xl" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Lightning Fast HMR</h3>
-              <p className="text-gray-600">
-                Hot Module Replacement updates your app instantly without losing state. See changes in milliseconds, not seconds.
-              </p>
-            </div>
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ height: "100%", "&:hover": { boxShadow: 4 } }}>
+                <CardContent sx={{ p: 4 }}>
+                  <Box sx={{ 
+                    width: 48, 
+                    height: 48, 
+                    bgcolor: "primary.light", 
+                    borderRadius: 2, 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    mb: 3 
+                  }}>
+                    <FlashOn color="primary" sx={{ fontSize: "2rem" }} />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+                    Lightning Fast HMR
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Hot Module Replacement updates your app instantly without losing state. 
+                    See changes in milliseconds, not seconds.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
             
-            <div className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-react/10 rounded-lg flex items-center justify-center mb-6">
-                <Box className="text-react text-2xl" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Component Architecture</h3>
-              <p className="text-gray-600">
-                Build reusable, composable components with React's powerful component system and modern hooks.
-              </p>
-            </div>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ height: "100%", "&:hover": { boxShadow: 4 } }}>
+                <CardContent sx={{ p: 4 }}>
+                  <Box sx={{ 
+                    width: 48, 
+                    height: 48, 
+                    bgcolor: "info.light", 
+                    borderRadius: 2, 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    mb: 3 
+                  }}>
+                    <Inventory color="info" sx={{ fontSize: "2rem" }} />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+                    Component Architecture
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Build reusable, composable components with React's powerful component system 
+                    and modern hooks.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
             
-            <div className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mb-6">
-                <Settings className="text-success text-2xl" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Optimized Builds</h3>
-              <p className="text-gray-600">
-                Rollup-powered builds with tree-shaking, code splitting, and optimizations for production performance.
-              </p>
-            </div>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ height: "100%", "&:hover": { boxShadow: 4 } }}>
+                <CardContent sx={{ p: 4 }}>
+                  <Box sx={{ 
+                    width: 48, 
+                    height: 48, 
+                    bgcolor: "success.light", 
+                    borderRadius: 2, 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    mb: 3 
+                  }}>
+                    <Settings color="success" sx={{ fontSize: "2rem" }} />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+                    Optimized Builds
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Rollup-powered builds with tree-shaking, code splitting, and optimizations 
+                    for production performance.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
             
-            <div className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-orange-custom/10 rounded-lg flex items-center justify-center mb-6">
-                <Smartphone className="text-orange-custom text-2xl" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Mobile First</h3>
-              <p className="text-gray-600">
-                Responsive design patterns and mobile-optimized components that work seamlessly across all devices.
-              </p>
-            </div>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ height: "100%", "&:hover": { boxShadow: 4 } }}>
+                <CardContent sx={{ p: 4 }}>
+                  <Box sx={{ 
+                    width: 48, 
+                    height: 48, 
+                    bgcolor: "warning.light", 
+                    borderRadius: 2, 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    mb: 3 
+                  }}>
+                    <Smartphone color="warning" sx={{ fontSize: "2rem" }} />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+                    Mobile First
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Responsive design patterns and mobile-optimized components that work 
+                    seamlessly across all devices.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
             
-            <div className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-6">
-                <Code className="text-purple-500 text-2xl" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Modern JavaScript</h3>
-              <p className="text-gray-600">
-                ES6+ support, TypeScript ready, and modern JavaScript features out of the box with zero configuration.
-              </p>
-            </div>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ height: "100%", "&:hover": { boxShadow: 4 } }}>
+                <CardContent sx={{ p: 4 }}>
+                  <Box sx={{ 
+                    width: 48, 
+                    height: 48, 
+                    bgcolor: "secondary.light", 
+                    borderRadius: 2, 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    mb: 3 
+                  }}>
+                    <Code color="secondary" sx={{ fontSize: "2rem" }} />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+                    Modern JavaScript
+                  </Typography>
+                  <Typography color="text.secondary">
+                    ES6+ support, TypeScript ready, and modern JavaScript features out of the box 
+                    with zero configuration.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
             
-            <div className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-6">
-                <Route className="text-blue-500 text-2xl" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Client-side Routing</h3>
-              <p className="text-gray-600">
-                Built-in routing setup with React Router for seamless navigation and single-page app experience.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card sx={{ height: "100%", "&:hover": { boxShadow: 4 } }}>
+                <CardContent sx={{ p: 4 }}>
+                  <Box sx={{ 
+                    width: 48, 
+                    height: 48, 
+                    bgcolor: "error.light", 
+                    borderRadius: 2, 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    mb: 3 
+                  }}>
+                    <Route color="error" sx={{ fontSize: "2rem" }} />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+                    Client-side Routing
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Built-in routing setup with React Router for seamless navigation and 
+                    single-page app experience.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
 
       {/* Component Showcase */}
-      <section id="components" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+      <Box component="section" id="components" sx={{ py: 10, bgcolor: "grey.50" }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: "center", mb: 8 }}>
+            <Typography variant="h2" sx={{ fontWeight: "bold", mb: 2 }}>
               Sample Components
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            </Typography>
+            <Typography variant="h6" color="text.secondary" sx={{ maxWidth: "800px", mx: "auto" }}>
               Explore pre-built components demonstrating React patterns and best practices
-            </p>
-          </div>
+            </Typography>
+          </Box>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <Counter />
-            <TodoList />
-            <ApiData />
-            <ContactForm />
-          </div>
-        </div>
-      </section>
+          <Grid container spacing={4}>
+            <Grid item xs={12} lg={6}>
+              <Counter />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+              <TodoList />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+              <ApiData />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+              <ContactForm />
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
 
       {/* Quick Start Guide */}
-      <section id="docs" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+      <Box component="section" id="docs" sx={{ py: 10, bgcolor: "white" }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: "center", mb: 8 }}>
+            <Typography variant="h2" sx={{ fontWeight: "bold", mb: 2 }}>
               Quick Start Guide
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            </Typography>
+            <Typography variant="h6" color="text.secondary" sx={{ maxWidth: "800px", mx: "auto" }}>
               Get up and running with React + Vite in minutes
-            </p>
-          </div>
+            </Typography>
+          </Box>
           
-          <div className="space-y-8">
-            <div className="bg-gray-50 rounded-xl p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">1. Create Your Project</h3>
-              <div className="bg-gray-900 rounded-lg p-6 text-sm text-gray-300 font-mono overflow-x-auto">
-                <div className="text-green-400"># Create a new React + Vite project</div>
-                <div className="text-white">npm create vite@latest my-react-app -- --template react</div>
-                <div className="text-white">cd my-react-app</div>
-                <div className="text-white">npm install</div>
-              </div>
-            </div>
+          <Stack spacing={4}>
+            <Card>
+              <CardContent sx={{ p: 4 }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 3 }}>
+                  1. Create Your Project
+                </Typography>
+                <Paper 
+                  sx={{ 
+                    bgcolor: "grey.900", 
+                    color: "white", 
+                    p: 3, 
+                    borderRadius: 2,
+                    overflow: "auto"
+                  }}
+                >
+                  <Typography variant="body2" component="div" sx={{ fontFamily: "monospace" }}>
+                    <Typography color="success.main"># Create a new React + Vite project</Typography>
+                    <Typography>npm create vite@latest my-react-app -- --template react</Typography>
+                    <Typography>cd my-react-app</Typography>
+                    <Typography>npm install</Typography>
+                  </Typography>
+                </Paper>
+              </CardContent>
+            </Card>
             
-            <div className="bg-gray-50 rounded-xl p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">2. Start Development Server</h3>
-              <div className="bg-gray-900 rounded-lg p-6 text-sm text-gray-300 font-mono overflow-x-auto">
-                <div className="text-green-400"># Start the development server</div>
-                <div className="text-white">npm run dev</div>
-                <div className="text-gray-500 mt-2">  ➜  Local:   http://localhost:5173/</div>
-                <div className="text-gray-500">  ➜  Network: use --host to expose</div>
-              </div>
-            </div>
+            <Card>
+              <CardContent sx={{ p: 4 }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 3 }}>
+                  2. Start Development Server
+                </Typography>
+                <Paper 
+                  sx={{ 
+                    bgcolor: "grey.900", 
+                    color: "white", 
+                    p: 3, 
+                    borderRadius: 2,
+                    overflow: "auto"
+                  }}
+                >
+                  <Typography variant="body2" component="div" sx={{ fontFamily: "monospace" }}>
+                    <Typography color="success.main"># Start the development server</Typography>
+                    <Typography>npm run dev</Typography>
+                    <Typography color="grey.500" sx={{ mt: 1 }}>➜  Local:   http://localhost:5173/</Typography>
+                    <Typography color="grey.500">➜  Network: use --host to expose</Typography>
+                  </Typography>
+                </Paper>
+              </CardContent>
+            </Card>
             
-            <div className="bg-gray-50 rounded-xl p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">3. Create Components</h3>
-              <div className="bg-gray-900 rounded-lg p-6 text-sm text-gray-300 font-mono overflow-x-auto">
-                <div className="text-green-400">// src/components/Counter.jsx</div>
-                <div><span className="text-blue-400">import</span> <span className="text-white">{'{ useState }'}</span> <span className="text-blue-400">from</span> <span className="text-yellow-400">'react'</span></div>
-                <div className="mt-2"></div>
-                <div><span className="text-blue-400">export default function</span> <span className="text-yellow-400">Counter</span><span className="text-white">() {'{'}</span></div>
-                <div className="text-white ml-4"><span className="text-blue-400">const</span> [count, setCount] = <span className="text-yellow-400">useState</span>(0)</div>
-                <div className="mt-2"></div>
-                <div className="ml-4"><span className="text-blue-400">return</span> <span className="text-white">(</span></div>
-                <div className="text-white ml-8">&lt;<span className="text-red-400">div</span>&gt;</div>
-                <div className="text-white ml-12">&lt;<span className="text-red-400">h2</span>&gt;Count: {'{count}'}&lt;/<span className="text-red-400">h2</span>&gt;</div>
-                <div className="text-white ml-12">&lt;<span className="text-red-400">button</span> <span className="text-green-400">onClick</span>={"{() => setCount(count + 1)}"}&gt;</div>
-                <div className="text-white ml-16">Increment</div>
-                <div className="text-white ml-12">&lt;/<span className="text-red-400">button</span>&gt;</div>
-                <div className="text-white ml-8">&lt;/<span className="text-red-400">div</span>&gt;</div>
-                <div className="text-white ml-4">)</div>
-                <div className="text-white">{'}'}</div>
-              </div>
-            </div>
-            
-            <div className="bg-gray-50 rounded-xl p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">4. Build for Production</h3>
-              <div className="bg-gray-900 rounded-lg p-6 text-sm text-gray-300 font-mono overflow-x-auto">
-                <div className="text-green-400"># Build optimized production bundle</div>
-                <div className="text-white">npm run build</div>
-                <div className="text-gray-500 mt-2">✓ Built in 1.23s</div>
-                <div className="text-gray-500">  dist/index.html                 0.46 kB</div>
-                <div className="text-gray-500">  dist/assets/index-a1b2c3d4.js  143.21 kB</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+            <Card>
+              <CardContent sx={{ p: 4 }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 3 }}>
+                  3. Build for Production
+                </Typography>
+                <Paper 
+                  sx={{ 
+                    bgcolor: "grey.900", 
+                    color: "white", 
+                    p: 3, 
+                    borderRadius: 2,
+                    overflow: "auto"
+                  }}
+                >
+                  <Typography variant="body2" component="div" sx={{ fontFamily: "monospace" }}>
+                    <Typography color="success.main"># Build optimized production bundle</Typography>
+                    <Typography>npm run build</Typography>
+                    <Typography color="grey.500" sx={{ mt: 1 }}>✓ Built in 1.23s</Typography>
+                    <Typography color="grey.500">  dist/index.html                 0.46 kB</Typography>
+                    <Typography color="grey.500">  dist/assets/index-a1b2c3d4.js  143.21 kB</Typography>
+                  </Typography>
+                </Paper>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Container>
+      </Box>
 
       <Footer />
-    </div>
+    </Box>
   );
 }

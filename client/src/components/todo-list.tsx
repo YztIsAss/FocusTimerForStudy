@@ -1,8 +1,21 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Plus, Trash2 } from "lucide-react";
+import { 
+  Card, 
+  CardContent, 
+  Button, 
+  TextField, 
+  Checkbox, 
+  Typography, 
+  Box, 
+  List, 
+  ListItem, 
+  ListItemIcon, 
+  ListItemText, 
+  ListItemSecondaryAction, 
+  IconButton,
+  Stack
+} from "@mui/material";
+import { Add, Delete } from "@mui/icons-material";
 
 interface Todo {
   id: number;
@@ -42,52 +55,74 @@ export default function TodoList() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-      <div className="bg-gray-900 text-white p-4">
-        <h3 className="text-lg font-semibold">Todo List</h3>
-        <p className="text-gray-300 text-sm">Form handling and list management</p>
-      </div>
-      <div className="p-8">
-        <div className="mb-6">
-          <div className="flex space-x-2">
-            <Input
-              type="text"
-              placeholder="Add a new task..."
-              value={newTodo}
-              onChange={(e) => setNewTodo(e.target.value)}
-              onKeyPress={handleKeyPress}
-              className="flex-1"
-            />
-            <Button onClick={addTodo} className="bg-primary hover:bg-primary/90">
-              <Plus className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
+    <Card sx={{ height: "100%" }}>
+      <Box sx={{ bgcolor: "grey.900", color: "white", p: 2 }}>
+        <Typography variant="h6" component="h3">
+          Todo List
+        </Typography>
+        <Typography variant="body2" color="grey.300">
+          Form handling and list management
+        </Typography>
+      </Box>
+      <CardContent sx={{ p: 3 }}>
+        <Stack direction="row" spacing={1} sx={{ mb: 3 }}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Add a new task..."
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            onKeyPress={handleKeyPress}
+            size="small"
+          />
+          <Button
+            onClick={addTodo}
+            variant="contained"
+            color="primary"
+            startIcon={<Add />}
+          >
+            Add
+          </Button>
+        </Stack>
         
-        <div className="space-y-2">
+        <List disablePadding>
           {todos.map((todo) => (
-            <div key={todo.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-              <Checkbox
-                checked={todo.completed}
-                onCheckedChange={() => toggleTodo(todo.id)}
+            <ListItem 
+              key={todo.id} 
+              sx={{ 
+                bgcolor: "grey.50", 
+                mb: 1, 
+                borderRadius: 1,
+                px: 2
+              }}
+            >
+              <ListItemIcon>
+                <Checkbox
+                  checked={todo.completed}
+                  onChange={() => toggleTodo(todo.id)}
+                  color="primary"
+                />
+              </ListItemIcon>
+              <ListItemText 
+                primary={todo.text}
+                sx={{
+                  textDecoration: todo.completed ? "line-through" : "none",
+                  opacity: todo.completed ? 0.6 : 1
+                }}
               />
-              <span 
-                className={`flex-1 ${todo.completed ? "line-through text-gray-500" : "text-gray-900"}`}
-              >
-                {todo.text}
-              </span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => deleteTodo(todo.id)}
-                className="text-red-500 hover:text-red-700"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
+              <ListItemSecondaryAction>
+                <IconButton
+                  edge="end"
+                  onClick={() => deleteTodo(todo.id)}
+                  color="error"
+                >
+                  <Delete />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
           ))}
-        </div>
-      </div>
-    </div>
+        </List>
+      </CardContent>
+    </Card>
   );
 }

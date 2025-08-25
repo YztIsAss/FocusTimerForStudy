@@ -1,46 +1,58 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Minus, Plus, RotateCcw } from "lucide-react";
+import { Card, CardContent, Button, Typography, Box, Stack } from "@mui/material";
+import { Remove, Add, RestartAlt } from "@mui/icons-material";
 
 export default function Counter() {
   const [count, setCount] = useState(42);
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-      <div className="bg-gray-900 text-white p-4">
-        <h3 className="text-lg font-semibold">Interactive Counter</h3>
-        <p className="text-gray-300 text-sm">State management with React hooks</p>
-      </div>
-      <div className="p-8">
-        <div className="text-center">
-          <div className="text-6xl font-bold text-primary mb-6">{count}</div>
-          <div className="flex justify-center space-x-4">
-            <Button
-              onClick={() => setCount(count - 1)}
-              variant="destructive"
-              size="lg"
-              className="px-6"
-            >
-              <Minus className="h-5 w-5" />
-            </Button>
-            <Button
-              onClick={() => setCount(42)}
-              variant="secondary"
-              size="lg"
-              className="px-6"
-            >
-              <RotateCcw className="h-5 w-5" />
-            </Button>
-            <Button
-              onClick={() => setCount(count + 1)}
-              size="lg"
-              className="px-6 bg-success hover:bg-success/90"
-            >
-              <Plus className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Card sx={{ height: "100%" }}>
+      <Box sx={{ bgcolor: "grey.900", color: "white", p: 2 }}>
+        <Typography variant="h6" component="h3">
+          Interactive Counter
+        </Typography>
+        <Typography variant="body2" color="grey.300">
+          State management with React hooks
+        </Typography>
+      </Box>
+      <CardContent sx={{ p: 4, textAlign: "center" }}>
+        <Typography 
+          variant="h1" 
+          component="div" 
+          color="primary" 
+          sx={{ fontWeight: "bold", fontSize: "4rem", mb: 3 }}
+        >
+          {count}
+        </Typography>
+        <Stack direction="row" spacing={2} justifyContent="center">
+          <Button
+            onClick={() => setCount(count - 1)}
+            variant="contained"
+            color="error"
+            size="large"
+            startIcon={<Remove />}
+          >
+            Decrease
+          </Button>
+          <Button
+            onClick={() => setCount(42)}
+            variant="outlined"
+            size="large"
+            startIcon={<RestartAlt />}
+          >
+            Reset
+          </Button>
+          <Button
+            onClick={() => setCount(count + 1)}
+            variant="contained"
+            color="success"
+            size="large"
+            startIcon={<Add />}
+          >
+            Increase
+          </Button>
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }

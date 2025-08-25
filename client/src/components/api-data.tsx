@@ -1,6 +1,16 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { RefreshCw, User } from "lucide-react";
+import { 
+  Card, 
+  CardContent, 
+  Button, 
+  Typography, 
+  Box, 
+  Avatar, 
+  Stack, 
+  Skeleton, 
+  CircularProgress 
+} from "@mui/material";
+import { Refresh, Person } from "@mui/icons-material";
 
 interface UserData {
   name: string;
@@ -39,51 +49,63 @@ export default function ApiData() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-      <div className="bg-gray-900 text-white p-4">
-        <h3 className="text-lg font-semibold">API Data Fetching</h3>
-        <p className="text-gray-300 text-sm">Loading states and error handling</p>
-      </div>
-      <div className="p-8">
-        <div className="space-y-4">
+    <Card sx={{ height: "100%" }}>
+      <Box sx={{ bgcolor: "grey.900", color: "white", p: 2 }}>
+        <Typography variant="h6" component="h3">
+          API Data Fetching
+        </Typography>
+        <Typography variant="body2" color="grey.300">
+          Loading states and error handling
+        </Typography>
+      </Box>
+      <CardContent sx={{ p: 3 }}>
+        <Stack spacing={3}>
           <Button
             onClick={fetchData}
             disabled={isLoading}
-            className="bg-primary hover:bg-primary/90 w-full"
+            variant="contained"
+            color="primary"
+            fullWidth
+            startIcon={
+              isLoading ? <CircularProgress size={20} /> : <Refresh />
+            }
           >
-            <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
             Fetch User Data
           </Button>
           
           {isLoading ? (
-            <div className="bg-gray-50 rounded-lg p-4">
-              <div className="animate-pulse flex space-x-4">
-                <div className="rounded-full bg-gray-300 h-12 w-12"></div>
-                <div className="flex-1 space-y-2 py-1">
-                  <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-                  <div className="space-y-2">
-                    <div className="h-4 bg-gray-300 rounded"></div>
-                    <div className="h-4 bg-gray-300 rounded w-5/6"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Box sx={{ bgcolor: "grey.50", borderRadius: 2, p: 2 }}>
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Skeleton variant="circular" width={48} height={48} />
+                <Box sx={{ flex: 1 }}>
+                  <Skeleton variant="text" width="75%" />
+                  <Skeleton variant="text" width="100%" />
+                  <Skeleton variant="text" width="85%" />
+                </Box>
+              </Stack>
+            </Box>
           ) : (
-            <div className="bg-gray-50 rounded-lg p-4">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <User className="text-primary text-xl" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-900">{userData.name}</h4>
-                  <p className="text-gray-600">{userData.email}</p>
-                  <p className="text-sm text-gray-500">{userData.location}</p>
-                </div>
-              </div>
-            </div>
+            <Box sx={{ bgcolor: "grey.50", borderRadius: 2, p: 2 }}>
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Avatar sx={{ bgcolor: "primary.main", width: 48, height: 48 }}>
+                  <Person />
+                </Avatar>
+                <Box>
+                  <Typography variant="h6" component="h4">
+                    {userData.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {userData.email}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {userData.location}
+                  </Typography>
+                </Box>
+              </Stack>
+            </Box>
           )}
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }
