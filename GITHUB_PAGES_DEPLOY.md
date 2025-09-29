@@ -24,20 +24,32 @@ This project is configured to automatically deploy to GitHub Pages using GitHub 
 
 ## Configuration Notes
 
-- The app is configured to work with GitHub Pages out of the box
-- Static assets and routing are handled automatically
+- The GitHub Actions workflow is configured with automatic base path detection
+- SPA routing fallback (404.html) is automatically created for client-side routing
 - The deployment happens automatically on every push to the `main` branch
+
+## Important: Base Path Configuration
+
+**For repositories deployed as subdirectories** (e.g., `username.github.io/my-app`), you need to manually configure the base path:
+
+1. Edit `vite.config.ts` and add the base configuration:
+   ```javascript
+   export default defineConfig({
+     base: process.env.VITE_BASE_PATH || "/",
+     // ... rest of your config
+   });
+   ```
+
+2. The GitHub Actions workflow already sets `VITE_BASE_PATH` automatically, so this will work once the config is updated.
+
+**Alternative solution**: Deploy to a repository named `username.github.io` to avoid base path issues entirely.
 
 ## Troubleshooting
 
-If your app doesn't load correctly and your repository is deployed as a subdirectory (e.g., `username.github.io/my-app`), you may need to configure the base path:
-
-1. Contact support or manually edit the vite.config.ts to add:
-   ```javascript
-   base: '/your-repository-name/',
-   ```
-
-2. Alternatively, deploy to a repository named `username.github.io` for root domain deployment.
+If your app doesn't load correctly:
+- Check if CSS/JS files are loading (404 errors indicate base path issues)
+- Verify that your repository name matches your expectations
+- Ensure the Pages source is set to "GitHub Actions" in repository settings
 
 ## Manual Deployment
 

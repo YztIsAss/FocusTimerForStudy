@@ -25,7 +25,7 @@ const StyledFab = styled(Fab)({
   right: 0,
   margin: '0 auto',
 });
-export default function Footer({ pageId<number>, setPageId<Function> }) {
+export default function Footer({ pageId, setPageId }: { pageId: number, setPageId: (id: number) => void }) {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
