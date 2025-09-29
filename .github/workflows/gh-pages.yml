@@ -1,53 +1,30 @@
-name: Build and Deploy to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - main
-
-permissions:
-  contents: write
+      - main  # Change this to your default branch if it's different
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    env:
-      NODE_VERSION: 18
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          node-version: 16  # Or your preferred Node.js version
 
-      - name: Install root deps
-        run: npm ci
+      - name: Install dependencies
+        run: npm install
 
-      - name: Build client (Vite) — run inside client folder
-        working-directory: client
-        env:
-          NODE_ENV: production
-        run: npm run build
-
-      # サーバーのバンドルが必要ならこのステップを有効化（GitHub Pages は静的のみなので通常不要）
-      - name: Bundle server (optional)
-        if: false
-        run: npm run build
-
-      - name: List build output (for debugging)
-        run: |
-          echo "Contents of dist/public:"
-          ls -la dist/public || true
-          echo "Contents of client/dist:"
-          ls -la client/dist || true
+      - name: Build
+        run: npm run build  # Or your build command
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/public
-          commit_message: "Deploy to GitHub Pages: ${{ github.sha }}"
+          publish_dir: ./dist  # Or your build output directory
