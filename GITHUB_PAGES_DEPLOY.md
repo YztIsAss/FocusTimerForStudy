@@ -28,12 +28,21 @@ This project is configured to automatically deploy to GitHub Pages using GitHub 
 - SPA routing fallback (404.html) is automatically created for client-side routing
 - The deployment happens automatically on every push to the `main` branch
 
-## Automatic Configuration
+## Important: Base Path Configuration
 
-The GitHub Actions workflow automatically handles:
-- **Base path detection** - Automatically sets the correct path for subdirectory deployments
-- **Asset URLs** - Ensures CSS/JS files load correctly whether deployed to root or subdirectory
-- **SPA routing** - Creates fallback for client-side routing
+**For repositories deployed as subdirectories** (e.g., `username.github.io/my-app`), you need to manually configure the base path:
+
+1. Edit `vite.config.ts` and add the base configuration:
+   ```javascript
+   export default defineConfig({
+     base: process.env.VITE_BASE_PATH || "/",
+     // ... rest of your config
+   });
+   ```
+
+2. The GitHub Actions workflow already sets `VITE_BASE_PATH` automatically, so this will work once the config is updated.
+
+**Alternative solution**: Deploy to a repository named `username.github.io` to avoid base path issues entirely.
 
 ## Troubleshooting
 
