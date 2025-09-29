@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     env:
       NODE_VERSION: 18
@@ -24,38 +24,30 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install root deps
         run: npm ci
 
-      - name: Build client (Vite)
-        working-directory: ./client
+      - name: Build client (Vite) — run inside client folder
+        working-directory: client
         env:
           NODE_ENV: production
-        run: |
-          # install client deps if monorepo / separate package.json; if not needed, this still harmless
-          if [ -f client/package.json ]; then npm --prefix ./client ci; fi
-          npm --prefix ./client run build
-
-      - name: Bundle server for dist (optional)
-        # このプロジェクトでは server/index.ts を esbuild で bundle して dist/index.js を作るスクリプトが package.json の build に含まれます。
-        # GitHub Pages は静的ホスティングなのでサーバー側バンドルは不要だが、必要なら行う（不要ならこの step を削除）
         run: npm run build
 
-      - name: Prepare deployment directory
+      # サーバーのバンドルが必要ならこのステップを有効化（GitHub Pages は静的のみなので通常不要）
+      - name: Bundle server (optional)
+        if: false
+        run: npm run build
+
+      - name: List build output (for debugging)
         run: |
-          # Vite の outDir は dist/public（repo ルートからのパス）を想定
-          # client 側でビルドしていれば client/dist が出力になっているかもしれないため、両方を確認して統一
-          if [ -d client/dist ]; then SOURCE=client/dist; else SOURCE=dist/public; fi
-          echo "SOURCE=$SOURCE" > deploy_env
-          ls -la "$SOURCE"
-          # create an artifact directory for deployment
-          mkdir -p gh-pages
-          cp -r "$SOURCE"/. gh-pages/
+          echo "Contents of dist/public:"
+          ls -la dist/public || true
+          echo "Contents of client/dist:"
+          ls -la client/dist || true
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: gh-pages
-          # optional: user/email for commit
+          publish_dir: ./dist/public
           commit_message: "Deploy to GitHub Pages: ${{ github.sha }}"
