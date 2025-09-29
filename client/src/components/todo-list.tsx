@@ -1,19 +1,18 @@
-import { useState } from "react";
-import { 
-  Card, 
-  CardContent, 
-  Button, 
-  TextField, 
-  Checkbox, 
-  Typography, 
-  Box, 
-  List, 
-  ListItem, 
-  ListItemIcon, 
-  ListItemText, 
-  ListItemSecondaryAction, 
+import { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  Button,
+  TextField,
+  Checkbox,
+  Typography,
+  Box,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   IconButton,
-  Stack
+  Stack,
 } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
 
@@ -24,12 +23,19 @@ interface Todo {
 }
 
 export default function TodoList() {
-  const [todos, setTodos] = useState<Todo[]>([
-    { id: 1, text: "Learn React hooks", completed: false },
-    { id: 2, text: "Build awesome components", completed: false },
-    { id: 3, text: "Set up development environment", completed: true },
-  ]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState("");
+
+  useEffect(() => {
+    const savedTodos = localStorage.getItem("todos");
+    if (savedTodos) setTodos(JSON.parse(savedTodos));
+  }, []);
+
+  const saveTodos = () => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  };
+
+  useEffect(saveTodos, [todos]);
 
   const addTodo = () => {
     if (newTodo.trim()) {
@@ -39,13 +45,15 @@ export default function TodoList() {
   };
 
   const toggleTodo = (id: number) => {
-    setTodos(todos.map(todo => 
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ));
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+      ),
+    );
   };
 
   const deleteTodo = (id: number) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -58,10 +66,10 @@ export default function TodoList() {
     <Card sx={{ height: "100%" }}>
       <Box sx={{ bgcolor: "grey.900", color: "white", p: 2 }}>
         <Typography variant="h6" component="h3">
-          Todo List
+          やることリスト
         </Typography>
         <Typography variant="body2" color="grey.300">
-          Form handling and list management
+          取り組みたい科目や範囲などを決めてメモしよう！
         </Typography>
       </Box>
       <CardContent sx={{ p: 3 }}>
@@ -69,31 +77,37 @@ export default function TodoList() {
           <TextField
             fullWidth
             variant="outlined"
-            placeholder="Add a new task..."
+            placeholder="追加するタスクを入力"
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             size="small"
           />
-          <Button
+          <IconButton
             onClick={addTodo}
-            variant="contained"
             color="primary"
-            startIcon={<Add />}
           >
-            Add
-          </Button>
+            <Add/>
+          </IconButton>
         </Stack>
-        
+
         <List disablePadding>
           {todos.map((todo) => (
-            <ListItem 
-              key={todo.id} 
-              sx={{ 
-                bgcolor: "grey.50", 
-                mb: 1, 
+            <ListItem
+              secondaryAction={
+                <IconButton
+                  edge="end"
+                  onClick={() => deleteTodo(todo.id)}
+                  color="error"
+                >
+                  <Delete />
+                </IconButton>
+              }
+              key={todo.id}
+              sx={{
+                mb: 1,
                 borderRadius: 1,
-                px: 2
+                px: 2,
               }}
             >
               <ListItemIcon>
@@ -103,22 +117,13 @@ export default function TodoList() {
                   color="primary"
                 />
               </ListItemIcon>
-              <ListItemText 
+              <ListItemText
                 primary={todo.text}
                 sx={{
                   textDecoration: todo.completed ? "line-through" : "none",
-                  opacity: todo.completed ? 0.6 : 1
+                  opacity: todo.completed ? 0.6 : 1,
                 }}
               />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  onClick={() => deleteTodo(todo.id)}
-                  color="error"
-                >
-                  <Delete />
-                </IconButton>
-              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>

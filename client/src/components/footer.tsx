@@ -1,98 +1,69 @@
-import { Box, Container, Typography, Link, Stack, IconButton, Divider, Grid } from "@mui/material";
-import { FlashOn, GitHub, Twitter, LinkedIn } from "@mui/icons-material";
+import * as React from "react";
+import {
+  AppBar,
+  Drawer,
+  IconButton,
+  Box,
+  Toolbar,
+  styled,
+  Fab,
+  Button,
+  List,
+  Divider,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText
+} from "@mui/material";
+import { Menu as MenuIcon, Search as SearchIcon, MoreVert as MoreIcon, Add as AddIcon, Inbox as InboxIcon, Mail as MailIcon, AddAlarm as AddAlarmIcon, AccessAlarm as AccessAlarmIcon, Settings as SettingsIcon } from "@mui/icons-material";
 
-export default function Footer() {
-  return (
-    <Box component="footer" sx={{ bgcolor: "grey.900", color: "white", py: 8 }}>
-      <Container maxWidth="lg">
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={3}>
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <FlashOn color="primary" />
-              <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
-                React + Vite
-              </Typography>
-            </Stack>
-            <Typography variant="body2" color="grey.400">
-              Fast, modern web development with React and Vite. Build amazing applications with lightning speed.
-            </Typography>
-          </Grid>
-          
-          <Grid item xs={12} md={3}>
-            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-              Quick Links
-            </Typography>
-            <Stack spacing={1}>
-              <Link href="#" color="grey.400" sx={{ textDecoration: "none", "&:hover": { color: "white" } }}>
-                Getting Started
-              </Link>
-              <Link href="#" color="grey.400" sx={{ textDecoration: "none", "&:hover": { color: "white" } }}>
-                Documentation
-              </Link>
-              <Link href="#" color="grey.400" sx={{ textDecoration: "none", "&:hover": { color: "white" } }}>
-                Examples
-              </Link>
-              <Link href="#" color="grey.400" sx={{ textDecoration: "none", "&:hover": { color: "white" } }}>
-                API Reference
-              </Link>
-            </Stack>
-          </Grid>
-          
-          <Grid item xs={12} md={3}>
-            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-              Resources
-            </Typography>
-            <Stack spacing={1}>
-              <Link href="#" color="grey.400" sx={{ textDecoration: "none", "&:hover": { color: "white" } }}>
-                React Docs
-              </Link>
-              <Link href="#" color="grey.400" sx={{ textDecoration: "none", "&:hover": { color: "white" } }}>
-                Vite Guide
-              </Link>
-              <Link href="#" color="grey.400" sx={{ textDecoration: "none", "&:hover": { color: "white" } }}>
-                Community
-              </Link>
-              <Link href="#" color="grey.400" sx={{ textDecoration: "none", "&:hover": { color: "white" } }}>
-                Support
-              </Link>
-            </Stack>
-          </Grid>
-          
-          <Grid item xs={12} md={3}>
-            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-              Connect
-            </Typography>
-            <Stack direction="row" spacing={1}>
-              <IconButton 
-                color="inherit" 
-                sx={{ color: "grey.400", "&:hover": { color: "white" } }}
-              >
-                <GitHub />
-              </IconButton>
-              <IconButton 
-                color="inherit" 
-                sx={{ color: "grey.400", "&:hover": { color: "white" } }}
-              >
-                <Twitter />
-              </IconButton>
-              <IconButton 
-                color="inherit" 
-                sx={{ color: "grey.400", "&:hover": { color: "white" } }}
-              >
-                <LinkedIn />
-              </IconButton>
-            </Stack>
-          </Grid>
-        </Grid>
-        
-        <Divider sx={{ borderColor: "grey.800", my: 6 }} />
-        
-        <Box textAlign="center">
-          <Typography variant="body2" color="grey.400">
-            © 2025 React + Vite. Built with ❤️ for developers.
-          </Typography>
-        </Box>
-      </Container>
+const StyledFab = styled(Fab)({
+  position: 'absolute',
+  zIndex: 1,
+  top: -30,
+  left: 0,
+  right: 0,
+  margin: '0 auto',
+});
+export default function Footer({ pageId<number>, setPageId<Function> }) {
+  const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
+
+  const pageIcons = [<AccessAlarmIcon />, <InboxIcon />, <SettingsIcon />]
+
+  const DrawerList = (
+    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <List>
+        {['タイマー', 'メモ', '設定'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton onClick={() => setPageId(index)}>
+              <ListItemIcon>
+                {pageIcons[index]}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
     </Box>
+  );
+  return (
+    <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
+      <Toolbar>
+        <IconButton color="inherit" aria-label="open drawer" onClick={() => setOpen(!open)}>
+          <MenuIcon />
+        </IconButton>
+        {pageId !== 0 && <StyledFab color="secondary" aria-label="add" onClick={() => setPageId(0)}>
+          <AddAlarmIcon />
+        </StyledFab>}
+        <Box sx={{ flexGrow: 1 }} />
+      </Toolbar>
+    </AppBar>
   );
 }
