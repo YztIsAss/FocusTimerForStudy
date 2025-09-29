@@ -32,7 +32,7 @@ jobs:
       - name: Build Astro
         run: npm run build
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pages-artifact
           path: dist/public/
