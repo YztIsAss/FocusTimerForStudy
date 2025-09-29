@@ -1,0 +1,61 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: 18
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build client (Vite)
+        working-directory: ./client
+        env:
+          NODE_ENV: production
+        run: |
+          # install client deps if monorepo / separate package.json; if not needed, this still harmless
+          if [ -f client/package.json ]; then npm --prefix ./client ci; fi
+          npm --prefix ./client run build
+
+      - name: Bundle server for dist (optional)
+        # このプロジェクトでは server/index.ts を esbuild で bundle して dist/index.js を作るスクリプトが package.json の build に含まれます。
+        # GitHub Pages は静的ホスティングなのでサーバー側バンドルは不要だが、必要なら行う（不要ならこの step を削除）
+        run: npm run build
+
+      - name: Prepare deployment directory
+        run: |
+          # Vite の outDir は dist/public（repo ルートからのパス）を想定
+          # client 側でビルドしていれば client/dist が出力になっているかもしれないため、両方を確認して統一
+          if [ -d client/dist ]; then SOURCE=client/dist; else SOURCE=dist/public; fi
+          echo "SOURCE=$SOURCE" > deploy_env
+          ls -la "$SOURCE"
+          # create an artifact directory for deployment
+          mkdir -p gh-pages
+          cp -r "$SOURCE"/. gh-pages/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: gh-pages
+          # optional: user/email for commit
+          commit_message: "Deploy to GitHub Pages: ${{ github.sha }}"
